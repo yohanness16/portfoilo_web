@@ -7,7 +7,7 @@ export default function Cursor() {
   const ringRef = useRef<HTMLDivElement>(null)
   const mouse = useRef({ x: 0, y: 0 })
   const ring = useRef({ x: 0, y: 0 })
-  const rafRef = useRef<number>()
+  const rafRef = useRef<number>(0)
 
   useEffect(() => {
     const onMove = (e: MouseEvent) => {
