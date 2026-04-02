@@ -1,4 +1,4 @@
-# YOHANNES // DEVELOPER PORTFOLIO
+#  DEVELOPER PORTFOLIO
 ### YOH_OS v2.0 — Black & Neon Red Cyber Portfolio
 
 A production-grade Next.js 14 portfolio with full 3D immersion, interactive terminal, and cinematic scroll effects.
