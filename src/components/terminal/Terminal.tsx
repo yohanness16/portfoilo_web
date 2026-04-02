@@ -51,12 +51,12 @@ function scrambleDecrypt(
 }
 
 const CONTACT_DATA = {
-  phone: '+251 9XX XXX XXX',
+  phone: '+251974852985',
   email: 'yohanness1621@gmail.com',
   linkedin: 'linkedin.com/in/yohannes-desalegn',
-  github: 'github.com/yohannes',
-  telegram: 't.me/yohannes_dev',
-  whatsapp: '+251 9XX XXX XXX',
+  github: 'github.com/yohanness16',
+  telegram: 't.me/Yohannes_1216',
+  whatsapp: '+251974852985',
 }
 
 export default function Terminal() {

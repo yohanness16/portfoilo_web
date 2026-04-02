@@ -19,8 +19,8 @@ const TICKER_ITEMS = [
 
 const SOCIALS = [
   { icon: SiGithub, href: 'https://github.com/yohanness16', label: 'GitHub' },
-  { icon: SiTelegram, href: 'https://t.me/yohannes_1621', label: 'Telegram' },
-  { icon: SiWhatsapp, href: 'https://wa.me', label: 'WhatsApp' },
+  { icon: SiTelegram, href: 'https://t.me/Yohannes_1216', label: 'Telegram' },
+  { icon: SiWhatsapp, href: 'https://wa.me/251974852985', label: 'WhatsApp' },
 ]
 
 export default function FooterSection() {

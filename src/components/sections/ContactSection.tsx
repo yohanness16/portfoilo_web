@@ -8,8 +8,8 @@ import { MdOutlineWorkOutline } from 'react-icons/md'
 
 const SOCIALS = [
   { icon: SiGithub, label: 'GITHUB', sub: 'github.com/yohanness16', href: 'https://github.com/yohanness16' },
-  { icon: SiTelegram, label: 'TELEGRAM', sub: '@yohannes_1621', href: 'https://t.me/yohannes_1621' },
-  { icon: SiWhatsapp, label: 'WHATSAPP', sub: '+251 9XX XXX XXX', href: 'https://wa.me' },
+  { icon: SiTelegram, label: 'TELEGRAM', sub: '@Yohannes_1216', href: 'https://t.me/Yohannes_1216' },
+  { icon: SiWhatsapp, label: 'WHATSAPP', sub: '+251974852985', href: 'https://wa.me/251974852985' },
 ]
 
 export default function ContactSection() {
