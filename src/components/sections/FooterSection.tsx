@@ -1,5 +1,6 @@
 'use client'
 
+import { useState, useEffect } from 'react'
 import { SiGithub, SiTelegram, SiWhatsapp } from 'react-icons/si'
 import { HiArrowUp } from 'react-icons/hi'
 
@@ -17,77 +18,116 @@ const TICKER_ITEMS = [
 ]
 
 const SOCIALS = [
-  { icon: SiGithub,   href: 'https://github.com',   label: 'GitHub' },
-  // { icon: SiLinkedin, href: 'https://linkedin.com',  label: 'LinkedIn' },
-  { icon: SiTelegram, href: 'https://t.me',          label: 'Telegram' },
-  { icon: SiWhatsapp, href: 'https://wa.me',         label: 'WhatsApp' },
+  { icon: SiGithub, href: 'https://github.com', label: 'GitHub' },
+  { icon: SiTelegram, href: 'https://t.me', label: 'Telegram' },
+  { icon: SiWhatsapp, href: 'https://wa.me', label: 'WhatsApp' },
 ]
 
 export default function FooterSection() {
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768)
+    handleResize()
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
+
   return (
     <footer style={{
-      position: 'relative', zIndex: 10,
+      position: 'relative', 
+      zIndex: 10,
       borderTop: '1px solid rgba(255,0,51,0.2)',
-      boxShadow: '0 -24px 80px rgba(255,0,51,0.04)',
+      background: 'black'
     }}>
-      {/* Ticker */}
+      <style>{`
+        @keyframes ticker {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
+        }
+        .ticker-track {
+          display: flex;
+          width: fit-content;
+          animation: ticker 30s linear infinite;
+        }
+        .footer-social-link {
+          color: var(--text-dim);
+          transition: all 0.3s ease;
+        }
+        .footer-social-link:hover {
+          color: var(--red);
+          filter: drop-shadow(0 0 8px rgba(255,0,51,0.7));
+        }
+      `}</style>
+
       <div style={{
         borderBottom: '1px solid rgba(255,0,51,0.08)',
-        padding: '10px 0',
+        padding: '12px 0',
         overflow: 'hidden',
         background: 'rgba(255,0,51,0.02)',
       }}>
-        <div className="ticker-track" style={{ display: 'inline-flex', gap: 0, whiteSpace: 'nowrap' }}>
-          {[...TICKER_ITEMS, ...TICKER_ITEMS].map((item, i) => (
-            <span key={i} style={{ fontFamily: 'var(--font-mono)', fontSize: 10, color: 'var(--text-dim)', marginRight: 40 }}>
+        <div className="ticker-track">
+          {[...TICKER_ITEMS, ...TICKER_ITEMS, ...TICKER_ITEMS].map((item, i) => (
+            <span key={i} style={{ 
+              fontFamily: 'var(--font-mono)', 
+              fontSize: 10, 
+              color: 'var(--text-dim)', 
+              paddingRight: 50,
+              whiteSpace: 'nowrap'
+            }}>
               [{item.label}: <span style={{ color: 'var(--red)' }}>{item.value}</span>]
             </span>
           ))}
         </div>
       </div>
 
-      {/* Main footer row */}
       <div style={{
-        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-        padding: '28px 48px',
-        flexWrap: 'wrap', gap: 20,
+        display: 'flex', 
+        flexDirection: isMobile ? 'column' : 'row',
+        alignItems: 'center', 
+        justifyContent: 'space-between',
+        padding: isMobile ? '40px 24px' : '32px 48px',
+        gap: 30,
       }}>
-        {/* Copyright */}
-        <div style={{ fontFamily: 'var(--font-mono)', fontSize: 10, letterSpacing: 2, color: 'var(--text-dim)' }}>
-          © 2026{' '}
-          <span style={{ color: 'var(--red)' }}>YOHANNES_DESALEGN</span>
-          {' '}// ALL_RIGHTS_RESERVED
+        <div style={{ 
+          fontFamily: 'var(--font-mono)', 
+          fontSize: 10, 
+          letterSpacing: 2, 
+          color: 'var(--text-dim)',
+          textAlign: isMobile ? 'center' : 'left',
+          order: isMobile ? 3 : 1
+        }}>
+          © 2026 <span style={{ color: 'var(--red)' }}>YOHANNES_DESALEGN</span>
+          {!isMobile && ' // ALL_RIGHTS_RESERVED'}
         </div>
 
-        {/* Center: logo */}
         <div style={{
-          fontFamily: 'var(--font-display)', fontSize: 13, fontWeight: 900,
-          letterSpacing: 5, color: 'var(--red)',
+          fontFamily: 'var(--font-display)', 
+          fontSize: isMobile ? 16 : 14, 
+          fontWeight: 900,
+          letterSpacing: 6, 
+          color: 'var(--red)',
           textShadow: '0 0 20px rgba(255,0,51,0.4)',
+          order: isMobile ? 1 : 2
         }}>
           YOH_OS v2.0
         </div>
 
-        {/* Right: socials + top */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 20 }}>
+        <div style={{ 
+          display: 'flex', 
+          alignItems: 'center', 
+          gap: 24,
+          order: isMobile ? 2 : 3
+        }}>
           {SOCIALS.map(({ icon: Icon, href, label }) => (
             <a
               key={label}
               href={href}
               target="_blank"
               rel="noopener noreferrer"
-              title={label}
-              style={{ color: 'var(--text-dim)', textDecoration: 'none', cursor: 'none', transition: 'color 0.2s, filter 0.2s' }}
-              onMouseEnter={e => {
-                e.currentTarget.style.color = 'var(--red)'
-                e.currentTarget.style.filter = 'drop-shadow(0 0 8px rgba(255,0,51,0.7))'
-              }}
-              onMouseLeave={e => {
-                e.currentTarget.style.color = 'var(--text-dim)'
-                e.currentTarget.style.filter = 'none'
-              }}
+              className="footer-social-link"
             >
-              <Icon style={{ fontSize: 18 }} />
+              <Icon style={{ fontSize: 20 }} />
             </a>
           ))}
 
@@ -97,29 +137,43 @@ export default function FooterSection() {
             href="#hero"
             style={{
               fontFamily: 'var(--font-mono)', fontSize: 10, letterSpacing: 3,
-              color: 'var(--text-dim)', textDecoration: 'none', cursor: 'none',
+              color: 'var(--text-dim)', textDecoration: 'none',
               display: 'flex', alignItems: 'center', gap: 6,
-              transition: 'color 0.2s',
+              transition: 'color 0.3s'
             }}
             onMouseEnter={e => (e.currentTarget.style.color = 'var(--red)')}
             onMouseLeave={e => (e.currentTarget.style.color = 'var(--text-dim)')}
           >
-            <HiArrowUp style={{ fontSize: 14 }} />
-            TOP
+            <HiArrowUp style={{ fontSize: 16 }} />
+            {!isMobile && 'TOP'}
           </a>
         </div>
       </div>
 
-      {/* Bottom micro bar */}
       <div style={{
         borderTop: '1px solid rgba(255,0,51,0.05)',
-        padding: '10px 48px',
-        display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+        padding: '12px 24px',
+        display: 'flex', 
+        flexDirection: isMobile ? 'column' : 'row',
+        justifyContent: 'space-between', 
+        alignItems: 'center',
+        gap: 10
       }}>
-        <span style={{ fontFamily: 'var(--font-mono)', fontSize: 9, letterSpacing: 2, color: 'var(--text-muted)' }}>
-          BUILT WITH NEXT.JS · THREE.JS · REACT THREE FIBER · GSAP
+        <span style={{ 
+          fontFamily: 'var(--font-mono)', 
+          fontSize: 8, 
+          letterSpacing: 1, 
+          color: 'var(--text-muted)',
+          textAlign: 'center'
+        }}>
+          NEXT.JS · THREE.JS · R3F · GSAP
         </span>
-        <span style={{ fontFamily: 'var(--font-mono)', fontSize: 9, letterSpacing: 2, color: 'var(--text-muted)' }}>
+        <span style={{ 
+          fontFamily: 'var(--font-mono)', 
+          fontSize: 8, 
+          letterSpacing: 2, 
+          color: 'var(--text-muted)' 
+        }}>
           v2.0.26_STABLE
         </span>
       </div>

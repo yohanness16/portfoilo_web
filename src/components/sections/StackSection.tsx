@@ -1,13 +1,13 @@
 'use client'
 
+import { useState, useEffect } from 'react'
 import dynamic from 'next/dynamic'
 import {
   SiPython, SiRust, SiReact, SiNextdotjs, SiFastapi,
-  SiPytorch, SiDocker, SiPostgresql, // Updated
+  SiPytorch, SiDocker, SiPostgresql,
   SiTypescript, SiLinux, SiGit,
-  SiTailwindcss, SiRedis, SiKubernetes,
+  SiRedis, SiKubernetes,
 } from 'react-icons/si'
-//import { SiAmazonaws } from 'react-icons/si'
 import { TbBrandThreejs } from 'react-icons/tb'
 import { MdSecurity } from 'react-icons/md'
 
@@ -22,7 +22,6 @@ const TECH = [
   { icon: SiPytorch, name: 'PyTorch', level: 82, category: 'ML/AI' },
   { icon: SiDocker, name: 'Docker', level: 86, category: 'DevOps' },
   { icon: SiPostgresql, name: 'PostgreSQL', level: 87, category: 'Data' },
- // { icon: SiAmazonaws, name: 'AWS', level: 76, category: 'Cloud' },
   { icon: SiTypescript, name: 'TypeScript', level: 84, category: 'Frontend' },
   { icon: TbBrandThreejs, name: 'Three.js', level: 72, category: '3D' },
   { icon: SiLinux, name: 'Linux / Bash', level: 90, category: 'Systems' },
@@ -32,65 +31,100 @@ const TECH = [
   { icon: SiGit, name: 'Git / CI/CD', level: 90, category: 'DevOps' },
 ]
 
-const DIVIDER = (
-  <div style={{ height: 1, background: 'linear-gradient(90deg, transparent, var(--red), transparent)', margin: '0 48px' }} />
-)
-
 export default function StackSection() {
+  const [windowWidth, setWindowWidth] = useState(0)
+
+  useEffect(() => {
+    const handleResize = () => setWindowWidth(window.innerWidth)
+    handleResize()
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
+
+  const isMobile = windowWidth < 768
+  const isTablet = windowWidth >= 768 && windowWidth < 1024
+
+  const DIVIDER = (
+    <div style={{ height: 1, background: 'linear-gradient(90deg, transparent, var(--red), transparent)', margin: isMobile ? '0 20px' : '0 48px' }} />
+  )
+
   return (
     <>
       {DIVIDER}
-      <section id="stack" style={{ padding: '0 48px 100px', position: 'relative', zIndex: 10 }}>
-        {/* Header */}
-        <div className="reveal-up" style={{ textAlign: 'center', padding: '80px 0 56px' }}>
+      <section id="stack" style={{ padding: isMobile ? '0 20px 60px' : '0 48px 100px', position: 'relative', zIndex: 10 }}>
+        <div className="reveal-up" style={{ textAlign: 'center', padding: isMobile ? '40px 0 30px' : '80px 0 56px' }}>
           <span className="section-eyebrow">02_TECH_MATRIX</span>
           <h2 style={{
             fontFamily: 'var(--font-display)',
-            fontSize: 'clamp(28px, 4vw, 56px)',
+            fontSize: 'clamp(32px, 6vw, 56px)',
             fontWeight: 900, letterSpacing: 3, color: '#fff',
           }}>
             SKILL<span style={{ color: 'var(--red)' }}>_</span>SET
           </h2>
         </div>
 
-        {/* Layout: cube left, grid right */}
         <div
           className="reveal-up"
           style={{
-            display: 'grid',
-            gridTemplateColumns: '360px 1fr',
-            gap: 60,
-            maxWidth: 1100,
+            display: 'flex',
+            flexDirection: (isMobile || isTablet) ? 'column' : 'row',
+            gap: isMobile ? 30 : 60,
+            maxWidth: 1200,
             margin: '0 auto',
             alignItems: 'start',
           }}
         >
-          {/* 3D Cube */}
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 24 }}>
-             <TechCubeScene />
-            <div style={{ fontFamily: 'var(--font-mono)', fontSize: 10, letterSpacing: 3, color: 'var(--text-dim)', textAlign: 'center' }}>
+          <div style={{ 
+            width: (isMobile || isTablet) ? '100%' : '400px',
+            display: 'flex', 
+            flexDirection: 'column', 
+            alignItems: 'center', 
+            gap: 24,
+            flexShrink: 0
+          }}>
+            <div style={{ 
+              width: '100%', 
+              height: isMobile ? '260px' : isTablet ? '320px' : '400px',
+              position: 'relative'
+            }}>
+              <TechCubeScene />
+            </div>
+            
+            <div style={{ fontFamily: 'var(--font-mono)', fontSize: 9, letterSpacing: 2, color: 'var(--text-dim)', textAlign: 'center' }}>
               {'>'} HOVER_TO_DECELERATE
             </div>
-            {/* Cube caption panels */}
-            <div style={{ width: '100%', border: '1px solid rgba(255,0,51,0.12)', padding: 16, background: 'rgba(5,5,5,0.8)' }}>
-              <div style={{ fontFamily: 'var(--font-mono)', fontSize: 9, letterSpacing: 3, color: 'var(--red)', marginBottom: 12 }}>
+
+            <div style={{ 
+              width: '100%', 
+              border: '1px solid rgba(255,0,51,0.12)', 
+              padding: 20, 
+              background: 'rgba(5,5,5,0.8)',
+              boxShadow: 'inset 0 0 20px rgba(255,0,51,0.05)'
+            }}>
+              <div style={{ fontFamily: 'var(--font-mono)', fontSize: 8, letterSpacing: 2, color: 'var(--red)', marginBottom: 15 }}>
                 // ARCHITECTURE_PHILOSOPHY
               </div>
-              {['Distributed-first systems', 'ML at the edge', 'Cyber-aware design', 'Performance by default'].map((t) => (
-                <div key={t} style={{ display: 'flex', gap: 8, alignItems: 'center', marginBottom: 8 }}>
-                  <span style={{ color: 'var(--red)', fontSize: 10 }}>▸</span>
-                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: 11, color: '#888' }}>{t}</span>
-                </div>
-              ))}
+              <div style={{ 
+                display: 'grid', 
+                gridTemplateColumns: isTablet ? '1fr 1fr' : '1fr', 
+                gap: 10 
+              }}>
+                {['Distributed-first systems', 'ML at the edge', 'Cyber-aware design', 'Performance by default'].map((t) => (
+                  <div key={t} style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
+                    <span style={{ color: 'var(--red)', fontSize: 10 }}>▸</span>
+                    <span style={{ fontFamily: 'var(--font-mono)', fontSize: 10, color: '#999' }}>{t}</span>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
 
-          {/* Tech Grid */}
           <div
             style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fill, minmax(170px, 1fr))',
-              gap: 10,
+              gridTemplateColumns: isMobile ? '1fr 1fr' : 'repeat(auto-fill, minmax(180px, 1fr))',
+              gap: 12,
+              width: '100%'
             }}
           >
             {TECH.map((item) => {
@@ -99,34 +133,61 @@ export default function StackSection() {
                 <div
                   key={item.name}
                   className="cyber-card"
-                  style={{ padding: '16px 18px' }}
+                  style={{ 
+                    padding: isMobile ? '12px' : '18px',
+                    transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                    position: 'relative',
+                    overflow: 'hidden'
+                  }}
                   onMouseEnter={(e) => {
-                    const el = e.currentTarget
-                    el.style.background = 'rgba(255,0,51,0.05)'
+                    e.currentTarget.style.background = 'rgba(255,0,51,0.07)'
+                    e.currentTarget.style.borderColor = 'rgba(255,0,51,0.4)'
                   }}
                   onMouseLeave={(e) => {
-                    const el = e.currentTarget
-                    el.style.background = 'rgba(5,5,5,0.85)'
+                    e.currentTarget.style.background = 'rgba(5,5,5,0.85)'
+                    e.currentTarget.style.borderColor = 'rgba(255,0,51,0.15)'
                   }}
                 >
                   <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 12 }}>
                     <Icon
-                      style={{ fontSize: 22, color: 'var(--red)', flexShrink: 0, filter: 'drop-shadow(0 0 6px rgba(255,0,51,0.5))' }}
+                      style={{ fontSize: isMobile ? 18 : 22, color: 'var(--red)', flexShrink: 0, filter: 'drop-shadow(0 0 8px rgba(255,0,51,0.5))' }}
                     />
-                    <div>
-                      <div style={{ fontFamily: 'var(--font-mono)', fontSize: 11, color: 'var(--text)', letterSpacing: 0.5 }}>
-                        {item.name}
+                    <div style={{ minWidth: 0 }}>
+                      <div style={{ 
+                        fontFamily: 'var(--font-mono)', 
+                        fontSize: isMobile ? 9 : 11, 
+                        color: '#fff', 
+                        fontWeight: 600,
+                        whiteSpace: 'nowrap',
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis'
+                      }}>
+                        {item.name.toUpperCase()}
                       </div>
-                      <div style={{ fontFamily: 'var(--font-mono)', fontSize: 9, color: 'var(--text-dim)', letterSpacing: 2, marginTop: 2 }}>
+                      <div style={{ fontFamily: 'var(--font-mono)', fontSize: 8, color: 'var(--text-dim)', letterSpacing: 1 }}>
                         {item.category}
                       </div>
                     </div>
                   </div>
-                  <div className="tech-bar-bg">
-                    <div className="tech-bar-fill" style={{ width: `${item.level}%` }} />
+                  
+                  <div style={{ height: 2, background: 'rgba(255,255,255,0.05)', borderRadius: 1 }}>
+                    <div className="tech-bar-fill" style={{ 
+                      width: `${item.level}%`, 
+                      height: '100%', 
+                      background: 'var(--red)',
+                      boxShadow: '0 0 10px var(--red)'
+                    }} />
                   </div>
-                  <div style={{ fontFamily: 'var(--font-mono)', fontSize: 9, color: 'rgba(255,0,51,0.5)', marginTop: 5, textAlign: 'right' }}>
-                    {item.level}%
+                  
+                  <div style={{ 
+                    fontFamily: 'var(--font-mono)', 
+                    fontSize: 8, 
+                    color: 'rgba(255,0,51,0.6)', 
+                    marginTop: 6, 
+                    textAlign: 'right',
+                    letterSpacing: 1
+                  }}>
+                    {item.level}%_LOAD
                   </div>
                 </div>
               )
