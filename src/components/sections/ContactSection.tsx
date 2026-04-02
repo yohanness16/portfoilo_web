@@ -7,8 +7,8 @@ import { HiLocationMarker } from 'react-icons/hi'
 import { MdOutlineWorkOutline } from 'react-icons/md'
 
 const SOCIALS = [
-  { icon: SiGithub, label: 'GITHUB', sub: 'github.com/yohannes', href: 'https://github.com' },
-  { icon: SiTelegram, label: 'TELEGRAM', sub: '@yohannes_dev', href: 'https://t.me' },
+  { icon: SiGithub, label: 'GITHUB', sub: 'github.com/yohanness16', href: 'https://github.com/yohanness16' },
+  { icon: SiTelegram, label: 'TELEGRAM', sub: '@yohannes_1621', href: 'https://t.me/yohannes_1621' },
   { icon: SiWhatsapp, label: 'WHATSAPP', sub: '+251 9XX XXX XXX', href: 'https://wa.me' },
 ]
 

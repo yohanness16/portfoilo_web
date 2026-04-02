@@ -18,8 +18,8 @@ const TICKER_ITEMS = [
 ]
 
 const SOCIALS = [
-  { icon: SiGithub, href: 'https://github.com', label: 'GitHub' },
-  { icon: SiTelegram, href: 'https://t.me', label: 'Telegram' },
+  { icon: SiGithub, href: 'https://github.com/yohanness16', label: 'GitHub' },
+  { icon: SiTelegram, href: 'https://t.me/yohannes_1621', label: 'Telegram' },
   { icon: SiWhatsapp, href: 'https://wa.me', label: 'WhatsApp' },
 ]
 
