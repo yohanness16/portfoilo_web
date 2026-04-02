@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import dynamic from 'next/dynamic'
 import {
   SiPython, SiRust, SiReact, SiFastapi, SiPytorch,
@@ -13,6 +13,36 @@ import { MdSecurity, MdOutlineVisibility } from 'react-icons/md'
 import { FaBrain, FaMicrochip, FaRobot } from 'react-icons/fa'
 
 const ProjectsScene = dynamic(() => import('@/components/3d/ProjectsScene'), { ssr: false })
+
+// Glitch text scrambler
+const GLITCH_CHARS = '!@#$%^&*<>?/~+=_'
+
+function useGlitchText(text: string, trigger: boolean) {
+  const [display, setDisplay] = useState(text)
+
+  useEffect(() => {
+    if (!trigger) return
+    let frame = 0
+    const max = 12
+    const iv = setInterval(() => {
+      if (frame >= max) {
+        setDisplay(text)
+        clearInterval(iv)
+        return
+      }
+      setDisplay(
+        text
+          .split('')
+          .map((c) => (c === ' ' ? ' ' : GLITCH_CHARS[Math.floor(Math.random() * GLITCH_CHARS.length)]))
+          .join('')
+      )
+      frame++
+    }, 50)
+    return () => clearInterval(iv)
+  }, [trigger, text])
+
+  return display
+}
 
 export const ALL_PROJECTS = [
   { id: 'TRANSPORT_TRACKER_V1', name: 'Real-Time Transport Tracker', field: 'backend', tags: ['TypeScript', 'Next.js', 'GPS', 'Fullstack'], desc: 'Senior thesis — real-time public transport tracking system with live GPS telemetry and route optimization.', icons: [SiTypescript, SiFastapi, SiDocker], link: 'https://github.com/yohanness16/FYP-frontend' },
@@ -42,13 +72,28 @@ const FIELDS = [
 export default function WorksSection() {
   const [activeField, setActiveField] = useState('all')
   const [isMobile, setIsMobile] = useState(false)
+  const [glitchTrigger, setGlitchTrigger] = useState(0)
+  const glitchRef = useRef<HTMLHeadingElement>(null)
 
+  // Periodic glitch on desktop
   useEffect(() => {
-    const handleResize = () => setIsMobile(window.innerWidth < 768)
-    handleResize()
-    window.addEventListener('resize', handleResize)
-    return () => window.removeEventListener('resize', handleResize)
-  }, [])
+    if (isMobile) return
+    const iv = setInterval(() => {
+      setGlitchTrigger((t) => t + 1)
+    }, 4000 + Math.random() * 6000) // every 4-10s
+    return () => clearInterval(iv)
+  }, [isMobile])
+
+  const glitchText = useGlitchText('WORKS', glitchTrigger > 0)
+
+  // Glitch flash effect on cards
+  const triggerCardGlitch = useCallback(() => {
+    if (isMobile) return
+    document.querySelectorAll('.work-card').forEach((card) => {
+      card.classList.add('work-glitch-active')
+      setTimeout(() => card.classList.remove('work-glitch-active'), 300)
+    })
+  }, [isMobile])
 
   const filtered = activeField === 'all' ? ALL_PROJECTS : ALL_PROJECTS.filter((p) => p.field === activeField)
 
@@ -63,12 +108,13 @@ export default function WorksSection() {
         
         <div className="reveal-up" style={{ textAlign: 'center', padding: isMobile ? '40px 0 30px' : '80px 0 40px' }}>
           <span className="section-eyebrow">03_PROJECT_VAULT</span>
-          <h2 style={{
+          <h2 ref={glitchRef} style={{
             fontFamily: 'var(--font-display)',
             fontSize: 'clamp(28px, 6vw, 56px)',
             fontWeight: 900, letterSpacing: isMobile ? 1 : 3, color: '#fff',
+            position: 'relative',
           }}>
-            WORKS
+            {glitchText}
           </h2>
           <p style={{ fontFamily: 'var(--font-mono)', fontSize: 9, color: 'var(--text-dim)', letterSpacing: 2, marginTop: 12 }}>
             SELECT CLEARANCE LEVEL
@@ -178,7 +224,7 @@ export default function WorksSection() {
           }}
         >
           {filtered.map((project) => (
-            <div key={project.id} className="cyber-card bracket-corners" style={{ padding: isMobile ? 20 : 28 }}>
+            <div key={project.id} className="cyber-card bracket-corners work-card" style={{ padding: isMobile ? 20 : 28 }}>
               <div style={{ fontFamily: 'var(--font-mono)', fontSize: 8, letterSpacing: 2, color: 'rgba(255,0,51,0.6)', marginBottom: 14 }}>
                 [ID: {project.id}]
               </div>
@@ -233,6 +279,38 @@ export default function WorksSection() {
           ))}
         </div>
       </section>
+      <style>{`
+        @keyframes work-glitch {
+          0% { transform: none; opacity: 1; }
+          20% { transform: translate(-2px, 0); opacity: 0.8; }
+          40% { transform: translate(1px, 0); }
+          60% { transform: translate(-1px, 0); }
+          80% { transform: translate(0); opacity: 0.9; }
+          100% { transform: none; opacity: 1; }
+        }
+        .work-glitch-active {
+          animation: work-glitch 0.3s ease-out;
+          position: relative;
+        }
+        .work-glitch-active::before,
+        .work-glitch-active::after {
+          content: '';
+          position: absolute;
+          inset: 0;
+          pointer-events: none;
+          mix-blend-mode: screen;
+        }
+        .work-glitch-active::before {
+          transform: translate(0);
+          clip-path: inset(20% 0 40% 0);
+          border-left: 2px solid rgba(255, 0, 51, 0.6);
+        }
+        .work-glitch-active::after {
+          transform: translate(0);
+          clip-path: inset(60% 0 10% 0);
+          border-right: 2px solid rgba(255, 0, 51, 0.4);
+        }
+      `}</style>
     </>
   )
 }
