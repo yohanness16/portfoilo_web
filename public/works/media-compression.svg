@@ -1,0 +1,17 @@
+<svg width="1600" height="900" viewBox="0 0 1600 900" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#060607" />
+      <stop offset="100%" stop-color="#1a120b" />
+    </linearGradient>
+  </defs>
+  <rect width="1600" height="900" fill="url(#g)" />
+  <rect x="90" y="90" width="1420" height="720" fill="none" stroke="#ff5c2d" stroke-opacity="0.3" stroke-width="2" />
+  <g stroke="#ff5c2d" stroke-opacity="0.18" stroke-width="1">
+    <rect x="140" y="260" width="540" height="320" />
+    <rect x="720" y="260" width="620" height="180" />
+    <rect x="720" y="460" width="620" height="120" />
+  </g>
+  <text x="120" y="190" fill="#ff5c2d" font-size="56" font-family="Orbitron, sans-serif" letter-spacing="4">MEDIA COMPRESSION API</text>
+  <text x="120" y="245" fill="#a7a7a7" font-size="22" font-family="Share Tech Mono, monospace" letter-spacing="2">FFMPEG • QUEUES • HIGH-THROUGHPUT</text>
+</svg>
